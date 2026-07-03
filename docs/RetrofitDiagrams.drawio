@@ -1,0 +1,271 @@
+<mxfile host="app.diagrams.net" version="24.0.0">
+  <diagram id="page1-before-after" name="1 Before vs After">
+    <mxGraphModel dx="1200" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p1_t1" value="BEFORE — bare-metal firmware (LegacyFirmware_Original)" style="text;html=1;fontSize=15;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="30" width="440" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_t2" value="AFTER — TwinCAT 3 C++ TcCOM module (MyCPP Versioned)" style="text;html=1;fontSize=15;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="660" y="30" width="460" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_main" value="&lt;b&gt;main.c&lt;/b&gt;&lt;br&gt;1 kHz super-loop: wait tick → read HAL → control → write HAL → kick watchdog" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="80" y="90" width="340" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_core" value="&lt;b&gt;Portable control core&lt;/b&gt;&lt;br&gt;legacy_pid.c/.h&lt;br&gt;legacy_temp_seq.c/.h&lt;br&gt;(no OS, no HAL includes)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="80" y="210" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_hal" value="&lt;b&gt;hal_target.c&lt;/b&gt;&lt;br&gt;ADC / PWM / GPIO registers&lt;br&gt;+ hardware watchdog" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="260" y="210" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_hw" value="Hardware: temp sensor · heater · panel" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="260" y="370" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_e1" value="calls" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p1_main" target="p1_core">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_e2" value="reads / writes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;exitX=0.75;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p1_main" target="p1_hal">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_e3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p1_hal" target="p1_hw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_task" value="TwinCAT real-time task (e.g. 1 ms)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="700" y="90" width="340" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_mod" value="&lt;b&gt;CallClassicC.cpp&lt;/b&gt; — TcCOM module&lt;br&gt;CycleUpdate() — replaces main.c + HAL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="700" y="180" width="340" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_core2" value="&lt;b&gt;Portable control core&lt;/b&gt;&lt;br&gt;legacy\legacy_pid.c/.h&lt;br&gt;legacy\legacy_temp_seq.c/.h&lt;br&gt;&lt;b&gt;byte-identical&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="700" y="300" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_da" value="&lt;b&gt;Data areas&lt;/b&gt; (TMC)&lt;br&gt;Inputs / Outputs&lt;br&gt;m_pInputs / m_pOutputs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="880" y="300" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_io" value="EtherCAT I/O · PLC · Scope (TwinCAT mapping)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="880" y="450" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_e4" value="CycleUpdate()" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p1_task" target="p1_mod">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_e5" value="extern &quot;C&quot; calls" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p1_mod" target="p1_core2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_e6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;exitX=0.75;exitY=1;entryX=0.5;entryY=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="p1_mod" target="p1_da">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_e7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="p1_da" target="p1_io">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_x1" value="copied unchanged (fc /b: identical)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;strokeWidth=2;strokeColor=#82b366;fontColor=#82b366;fontStyle=1;exitX=0.5;exitY=1;entryX=0.5;entryY=1;" edge="1" parent="1" source="p1_core" target="p1_core2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="160" y="530" />
+              <mxPoint x="780" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p1_x2" value="roles taken over by module + data areas" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;strokeWidth=2;strokeColor=#d79b00;fontColor=#d79b00;fontStyle=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="p1_main" target="p1_mod">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_l1" value="unchanged customer code" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="80" y="580" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_l2" value="hardware-specific (replaced)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="280" y="580" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_l3" value="TwinCAT infrastructure" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="480" y="580" width="180" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="page2-porting-steps" name="2 Porting Steps">
+    <mxGraphModel dx="900" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p2_start" value="Customer C code (.c / .h)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="325" y="40" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_s1" value="&lt;b&gt;1 · Audit&lt;/b&gt; — portable C99 compiles as-is.&lt;br&gt;List only OS / hardware / stdio calls: that list is the whole port." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="245" y="130" width="380" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_s2" value="&lt;b&gt;2 · Copy files&lt;/b&gt; into the C++ project unchanged&lt;br&gt;(e.g. legacy\) — Add → Existing Item" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="245" y="240" width="380" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_s3" value="&lt;b&gt;3 · Per .c file:&lt;/b&gt; C/C++ → Precompiled Headers →&lt;br&gt;&lt;b&gt;&quot;Not Using Precompiled Headers&quot;&lt;/b&gt; (the only required setting)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="245" y="340" width="380" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_s4" value="&lt;b&gt;4 · Include with C linkage&lt;/b&gt; in the module:&lt;br&gt;extern &quot;C&quot; { #include &quot;legacy/xyz.h&quot; }" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="245" y="440" width="380" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_s5" value="&lt;b&gt;5 · Give state a home:&lt;/b&gt; context structs become module members;&lt;br&gt;call init() in SetObjStatePS, tuning from TMC parameters" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="245" y="540" width="380" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_s6" value="&lt;b&gt;6 · Call step() from CycleUpdate()&lt;/b&gt;&lt;br&gt;dt = task cycle time; data areas replace the HAL" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="245" y="650" width="380" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_s7" value="&lt;b&gt;7 · Build&lt;/b&gt;  (Release | TwinCAT RT (x64))" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="245" y="750" width="380" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_d1" value="Linker&lt;br&gt;errors?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="345" y="840" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_fix" value="Map each unresolved symbol:&lt;br&gt;printf → m_Trace.Log&lt;br&gt;fopen → ITcFileAccess&lt;br&gt;per-cycle malloc → preallocate&lt;br&gt;threads → cyclic redesign" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="620" y="830" width="230" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_done" value="Done — signed TMX,&lt;br&gt;ready to activate" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="325" y="970" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_e0" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2_start" target="p2_s1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2_s1" target="p2_s2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2_s2" target="p2_s3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_e3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2_s3" target="p2_s4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_e4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2_s4" target="p2_s5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_e5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2_s5" target="p2_s6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_e6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2_s6" target="p2_s7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_e7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2_s7" target="p2_d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_e8" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="p2_d1" target="p2_fix">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_e9" value="rebuild" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=0;entryX=1;entryY=0.5;" edge="1" parent="1" source="p2_fix" target="p2_s7">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="735" y="775" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2_e10" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2_d1" target="p2_done">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="page3-state-machine" name="3 Demo State Machine">
+    <mxGraphModel dx="1100" dy="650" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="620" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p3_title" value="legacy_temp_seq.c — heater supervision state machine (values from the demo config)" style="text;html=1;fontSize=14;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="720" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_idle" value="&lt;b&gt;IDLE&lt;/b&gt;&lt;br&gt;heater off" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="80" y="140" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_ramp" value="&lt;b&gt;RAMP&lt;/b&gt;&lt;br&gt;PID active, approaching" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="440" y="140" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_track" value="&lt;b&gt;TRACK&lt;/b&gt;&lt;br&gt;at temperature" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="800" y="140" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_fault" value="&lt;b&gt;FAULT&lt;/b&gt;&lt;br&gt;latched trip, heater off" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="440" y="400" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_e1" value="Enable" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;exitX=1;exitY=0.25;entryX=0;entryY=0.25;" edge="1" parent="1" source="p3_idle" target="p3_ramp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_e2" value="!Enable" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;exitX=0;exitY=0.75;entryX=1;entryY=0.75;" edge="1" parent="1" source="p3_ramp" target="p3_idle">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_e3" value="|err| ≤ 1 °C for 0.5 s" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;exitX=1;exitY=0.25;entryX=0;entryY=0.25;" edge="1" parent="1" source="p3_ramp" target="p3_track">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_e4" value="|err| &gt; 3 °C" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;exitX=0;exitY=0.75;entryX=1;entryY=0.75;" edge="1" parent="1" source="p3_track" target="p3_ramp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_e5" value="!Enable" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;exitX=0.5;exitY=0;entryX=0.5;entryY=0;" edge="1" parent="1" source="p3_track" target="p3_idle">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="875" y="80" />
+              <mxPoint x="155" y="80" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p3_e6" value="T &gt; 110 °C for 0.1 s" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;strokeColor=#b85450;fontColor=#b85450;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p3_ramp" target="p3_fault">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_e7" value="T &gt; 110 °C for 0.1 s" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;strokeColor=#b85450;fontColor=#b85450;exitX=0.5;exitY=1;entryX=1;entryY=0.5;" edge="1" parent="1" source="p3_track" target="p3_fault">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="875" y="430" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p3_e8" value="FaultReset ↑ edge  AND  T &lt; 100 °C" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;exitX=0;exitY=0.5;entryX=0.5;entryY=1;" edge="1" parent="1" source="p3_fault" target="p3_idle">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="155" y="430" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p3_note" value="Heater output allowed only in RAMP / TRACK (tseq_heater_allowed).&lt;br&gt;Trip supervision runs in every state except FAULT.&lt;br&gt;Reset is edge-triggered: a held/stuck-high reset cannot defeat the latch.&lt;br&gt;Alarm bits: 0 = latched overtemp · 1 = within 5 °C of the limit (live)." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fffde7;strokeColor=#999999;align=left;spacingLeft=8;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="680" y="480" width="380" height="90" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="page4-cycle-flow" name="4 Cycle Data Flow">
+    <mxGraphModel dx="1100" dy="500" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1120" pageHeight="480" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p4_title" value="One CycleUpdate() pass — runs every task cycle (e.g. 1 ms), replaces the firmware&#39;s super-loop iteration" style="text;html=1;fontSize=14;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="900" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_in" value="&lt;b&gt;Read Inputs&lt;/b&gt;&lt;br&gt;SetpointTemp&lt;br&gt;Enable · FaultReset" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="120" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_seq" value="&lt;b&gt;tseq_step()&lt;/b&gt;&lt;br&gt;legacy_temp_seq.c&lt;br&gt;→ state + alarms" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="260" y="120" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_pid" value="&lt;b&gt;pid_step()&lt;/b&gt;&lt;br&gt;legacy_pid.c&lt;br&gt;→ power 0–100 %&lt;br&gt;(RAMP / TRACK only)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="490" y="120" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_plant" value="&lt;b&gt;Plant model&lt;/b&gt;&lt;br&gt;module code (demo only)&lt;br&gt;first-order lag, τ = 8 s" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="720" y="120" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_out" value="&lt;b&gt;Write Outputs&lt;/b&gt;&lt;br&gt;ActualTemp · HeaterPower&lt;br&gt;CtrlState · AlarmFlags" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="950" y="120" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="p4_in" target="p4_seq">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_e2" value="heater allowed?" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="p4_seq" target="p4_pid">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_e3" value="heater power" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="p4_pid" target="p4_plant">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_e4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="p4_plant" target="p4_out">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_e5" value="ActualTemp feeds back (next cycle) — on a real machine this loop closes through the physical process + EtherCAT I/O" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=11;dashed=1;exitX=0.5;exitY=1;entryX=0.5;entryY=1;" edge="1" parent="1" source="p4_plant" target="p4_seq">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="805" y="300" />
+              <mxPoint x="345" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
